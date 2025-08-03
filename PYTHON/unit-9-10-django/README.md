@@ -60,12 +60,7 @@ Welcome to the **AI Recipe Generator**, a Django-based web application that allo
 
 ## 🖼️ Screenshots
 
-> Add screenshots/gifs of:
-
-* Ingredient selection
-* Recipe display card
-* Loading animation
-* Floating ingredients & particle effects
+> Low on time, uplode later.
 
 ---
 
