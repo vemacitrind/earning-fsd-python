@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recipe Generator - Create Amazing Recipes with AI Magic!</title>
+    <meta name="description" content="Generate personalized recipes using AI with beautiful animations and effects">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<style>
+    
+</style>
+<body>
+    <!-- Advanced Background Animation -->
+    <div class="background-animation">
+        <div class="floating-ingredient" style="--delay: 0s;">🍅</div>
+        <div class="floating-ingredient" style="--delay: 2s;">🥕</div>
+        <div class="floating-ingredient" style="--delay: 4s;">🧄</div>
+        <div class="floating-ingredient" style="--delay: 6s;">🌶️</div>
+        <div class="floating-ingredient" style="--delay: 8s;">🥬</div>
+        <div class="floating-ingredient" style="--delay: 10s;">🍋</div>
+        <div class="floating-ingredient" style="--delay: 12s;">🍄</div>
+        <div class="floating-ingredient" style="--delay: 14s;">🥒</div>
+        <div class="floating-ingredient" style="--delay: 16s;">🌽</div>
+        <div class="floating-ingredient" style="--delay: 18s;">🥑</div>
+        <div class="floating-ingredient" style="--delay: 20s;">🍆</div>
+        <div class="floating-ingredient" style="--delay: 22s;">🥔</div>
+    </div>
+
+    <!-- Particle System -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Header with Enhanced Effects -->
+    <header class="header">
+        <div class="container">
+            <div>
+                <h1 class="logo">
+                    <i class="fas fa-utensils"></i>
+                    AI Recipe Generator
+                </h1>
+                <p class="tagline">✨ Create amazing recipes with AI magic! ✨</p>
+            </div>
+            <div class="user-info">
+                <span>Welcome, {{ user.username }}!</span>
+                <a href="{% url 'logout' %}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Recipe Form -->
+            <div class="recipe-form-container">
+                <form id="recipeForm" class="recipe-form">
+                    {% csrf_token %}
+                    <!-- Ingredients Selection with Enhanced UI -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-carrot"></i>
+                            Select Your Ingredients
+                            <span style="font-size: 0.8rem; opacity: 0.8; margin-left: auto;">(Choose multiple)</span>
+                        </h3>
+                        <div class="ingredients-grid">
+                            {% for ingredient in ingredients %}
+                            <label class="ingredient-item">
+                                <input type="checkbox" name="ingredients" value="{{ ingredient }}">
+                                <span class="ingredient-label">{{ ingredient }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Diet Preference with Enhanced Styling -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-leaf"></i>
+                            Diet Preference
+                            <span style="font-size: 0.8rem; opacity: 0.8; margin-left: auto;">(Optional)</span>
+                        </h3>
+                        <div class="select-wrapper">
+                            <select name="diet_preference" id="dietPreference">
+                                {% for diet in diet_preferences %}
+                                <option value="{{ diet }}">{{ diet }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Course Type with Enhanced Styling -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-clock"></i>
+                            Course Type
+                            <span style="font-size: 0.8rem; opacity: 0.8; margin-left: auto;">(Meal time)</span>
+                        </h3>
+                        <div class="select-wrapper">
+                            <select name="course_type" id="courseType">
+                                {% for course in course_types %}
+                                <option value="{{ course }}">{{ course }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Cuisine with Enhanced Styling -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-globe"></i>
+                            Cuisine Style
+                            <span style="font-size: 0.8rem; opacity: 0.8; margin-left: auto;">(Regional flavor)</span>
+                        </h3>
+                        <div class="select-wrapper">
+                            <select name="cuisine" id="cuisine">
+                                {% for cuisine_item in cuisines %}
+                                <option value="{{ cuisine_item }}">{{ cuisine_item }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Enhanced Generate Button -->
+                    <button type="submit" class="generate-btn" id="generateBtn">
+                        <i class="fas fa-magic"></i>
+                        <span>Generate Recipe</span>
+                        <div class="btn-loader"></div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Recipe Display -->
+            <div class="recipe-display" id="recipeDisplay" style="display: none;">
+                <div class="recipe-card">
+                    <div class="recipe-header">
+                        <h2 class="recipe-title" id="recipeTitle"></h2>
+                        <div class="recipe-meta">
+                            <span class="meta-item">
+                                <i class="fas fa-clock"></i>
+                                <span id="prepTime"></span>
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-fire"></i>
+                                <span id="cookTime"></span>
+                            </span>
+                            <span class="meta-item">
+                                <i class="fas fa-users"></i>
+                                <span id="servings"></span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="recipe-content">
+                        <div class="recipe-section">
+                            <h3><i class="fas fa-list"></i> Ingredients</h3>
+                            <ul id="ingredientsList"></ul>
+                        </div>
+
+                        <div class="recipe-section">
+                            <h3><i class="fas fa-tasks"></i> Instructions</h3>
+                            <ol id="instructionsList"></ol>
+                        </div>
+
+                        <div class="recipe-section">
+                            <h3><i class="fas fa-chart-pie"></i> Nutrition Info</h3>
+                            <p id="nutritionInfo"></p>
+                        </div>
+
+                        <div class="recipe-section">
+                            <h3><i class="fas fa-lightbulb"></i> Chef's Tips</h3>
+                            <p id="chefTips"></p>
+                        </div>
+                    </div>
+
+                    <div class="recipe-actions">
+                        <button class="action-btn save-btn">
+                            <i class="fas fa-heart"></i>
+                            Save Recipe
+                        </button>
+                        <button class="action-btn share-btn">
+                            <i class="fas fa-share"></i>
+                            Share Recipe
+                        </button>
+                        <button class="action-btn print-btn">
+                            <i class="fas fa-print"></i>
+                            Print Recipe
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Animation -->
+            <div class="loading-container" id="loadingContainer" style="display: none;">
+                <div class="cooking-animation">
+                    <div class="pot">
+                        <div class="steam"></div>
+                        <div class="steam"></div>
+                        <div class="steam"></div>
+                    </div>
+                    <p class="loading-text">Cooking up something delicious...</p>
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p id="errorText"></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 AI Recipe Generator. Made with <i class="fas fa-heart"></i> and AI</p>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

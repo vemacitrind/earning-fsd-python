@@ -1,0 +1,1 @@
+// Write a node.js script to jump on a specific code by specifying path on address bar of browser.

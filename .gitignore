@@ -1,0 +1,16 @@
+node_modules/
+.env
+
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.pkl
+
+.ipynb_checkpoints/
+
+.env.*
+.env.local
+
+.gitignore
