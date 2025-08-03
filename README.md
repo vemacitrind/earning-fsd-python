@@ -5,7 +5,7 @@ This repository contains learning materials, code examples, and notes for Full S
 ---
 
 ## 📁 Folder Structure
-
+```
 .
 ├── FSD/ # Full Stack Development (Node.js, JS, etc.)
 │ ├── unit-1/
@@ -19,7 +19,7 @@ This repository contains learning materials, code examples, and notes for Full S
 ├── unit-8-webscraping-socket.ipynb
 ├── unit-9-10-django/
 └── Churn.csv
-
+```
 yaml
 Copy
 Edit
