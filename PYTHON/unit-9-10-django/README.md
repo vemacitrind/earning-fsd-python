@@ -69,13 +69,6 @@ Welcome to the **AI Recipe Generator**, a Django-based web application that allo
 
 ---
 
-## 🤖 AI Recipe Generation Logic
-
-> *(Optional if implemented)*
-> The app uses OpenAI or custom-trained models to generate recipe instructions based on selected inputs.
-
----
-
 ## 🙌 Credits
 
 * Developed by \ vemacitrind
